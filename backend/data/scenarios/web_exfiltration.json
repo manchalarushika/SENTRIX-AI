@@ -1,0 +1,53 @@
+{
+ "name": "web_exfiltration",
+ "title": "Web application exploit to data exfiltration (alert-level replay)",
+ "description": "Synthetic sequence: WAF exploit alerts against the customer portal, a web-shell style malware alert, database access and a large outbound transfer.",
+ "events": [
+  {
+   "offset_min": 0,
+   "event_type": "Web Exploit",
+   "source": "waf",
+   "hostname": "WEB-PORTAL-01",
+   "src_ip": "192.0.2.77",
+   "severity": "high",
+   "description": "WAF alert: injection attempt against /api/login"
+  },
+  {
+   "offset_min": 1,
+   "event_type": "Web Exploit",
+   "source": "waf",
+   "hostname": "WEB-PORTAL-01",
+   "src_ip": "192.0.2.77",
+   "severity": "high",
+   "description": "WAF alert: repeated exploit attempts"
+  },
+  {
+   "offset_min": 5,
+   "event_type": "Malware Detected",
+   "source": "edr",
+   "hostname": "WEB-PORTAL-01",
+   "severity": "high",
+   "description": "EDR alert: suspicious file written to web root"
+  },
+  {
+   "offset_min": 12,
+   "event_type": "Network Connection",
+   "source": "ndr",
+   "hostname": "WEB-PORTAL-01",
+   "dst_ip": "10.1.0.40",
+   "dst_port": 1433,
+   "description": "Web server connection to ERP database"
+  },
+  {
+   "offset_min": 20,
+   "event_type": "Large Outbound Transfer",
+   "source": "firewall",
+   "hostname": "WEB-PORTAL-01",
+   "dst_ip": "192.0.2.200",
+   "dst_port": 443,
+   "severity": "high",
+   "description": "1.8 GB transferred to external host with no prior history"
+  }
+ ],
+ "hours_ago": 6
+}

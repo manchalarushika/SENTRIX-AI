@@ -1,0 +1,12 @@
+{
+  "name": "insider_exfil",
+  "title": "Off-hours insider data theft (alert-level replay)",
+  "description": "Synthetic sequence: an engineer logs on at an unusual hour, accesses the finance file server, and a DLP/egress alert fires for a large upload.",
+  "start_hour_utc": 2,
+  "events": [
+    {"offset_min": 0, "event_type": "Successful Logon", "source": "windows", "hostname": "WS-ENG-022", "user": "s.rao", "description": "Interactive logon"},
+    {"offset_min": 6, "event_type": "Network Share Accessed", "source": "windows", "hostname": "FS-01", "user": "s.rao", "src_ip": "10.2.0.22", "description": "Access to Finance share"},
+    {"offset_min": 9, "event_type": "Object Access", "source": "windows", "hostname": "FS-01", "user": "s.rao", "description": "Bulk read of 2,400 files in Finance share"},
+    {"offset_min": 18, "event_type": "Data Exfiltration", "source": "dlp", "hostname": "WS-ENG-022", "user": "s.rao", "dst_ip": "198.51.100.140", "severity": "high", "description": "DLP alert: sensitive documents uploaded to personal cloud storage"}
+  ]
+}

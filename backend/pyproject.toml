@@ -1,0 +1,18 @@
+[project]
+name = "sentrix-ai"
+version = "2.0.0"
+description = "SENTRIX AI - Autonomous Multi-Agent AI Cybersecurity and Threat Intelligence Platform"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 130
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["B008", "E731"]

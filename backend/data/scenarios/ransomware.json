@@ -1,0 +1,97 @@
+{
+ "name": "ransomware",
+ "title": "Phishing leading to ransomware (alert-level replay)",
+ "description": "Synthetic alert sequence: a phishing email, a malware alert, C2 beaconing, a credential-theft alert, lateral movement to file and backup servers, backup deletion and mass encryption alerts.",
+ "events": [
+  {
+   "offset_min": 0,
+   "event_type": "Phishing Email",
+   "source": "email-gateway",
+   "hostname": "WS-FIN-014",
+   "user": "j.miller",
+   "severity": "medium",
+   "description": "Macro-enabled attachment delivered"
+  },
+  {
+   "offset_min": 4,
+   "event_type": "Suspicious PowerShell",
+   "source": "edr",
+   "hostname": "WS-FIN-014",
+   "user": "j.miller",
+   "severity": "high",
+   "description": "EDR alert: suspicious script interpreter activity spawned by an Office application"
+  },
+  {
+   "offset_min": 6,
+   "event_type": "C2 Beacon",
+   "source": "ndr",
+   "hostname": "WS-FIN-014",
+   "dst_ip": "203.0.113.66",
+   "dst_port": 443,
+   "severity": "high",
+   "description": "Periodic beaconing to rare external destination"
+  },
+  {
+   "offset_min": 12,
+   "event_type": "Port Scan",
+   "source": "ndr",
+   "hostname": "WS-FIN-014",
+   "severity": "medium",
+   "description": "Internal service discovery from workstation"
+  },
+  {
+   "offset_min": 16,
+   "event_type": "Credential Dumping",
+   "source": "edr",
+   "hostname": "WS-FIN-014",
+   "severity": "critical",
+   "description": "EDR alert: credential theft behaviour detected"
+  },
+  {
+   "offset_min": 22,
+   "event_type": "Successful Logon",
+   "source": "windows",
+   "hostname": "FS-01",
+   "user": "admin.ops",
+   "src_ip": "10.2.0.14",
+   "description": "Admin logon to file server from finance workstation"
+  },
+  {
+   "offset_min": 23,
+   "event_type": "Lateral Movement",
+   "source": "edr",
+   "hostname": "FS-01",
+   "user": "admin.ops",
+   "severity": "high",
+   "description": "EDR alert: remote execution from WS-FIN-014"
+  },
+  {
+   "offset_min": 27,
+   "event_type": "Lateral Movement",
+   "source": "edr",
+   "hostname": "BACKUP-01",
+   "user": "admin.ops",
+   "severity": "high",
+   "description": "EDR alert: remote execution from FS-01"
+  },
+  {
+   "offset_min": 31,
+   "event_type": "Backup Deletion",
+   "source": "edr",
+   "hostname": "BACKUP-01",
+   "user": "admin.ops",
+   "severity": "critical",
+   "description": "EDR alert: recovery inhibition behaviour"
+  },
+  {
+   "offset_min": 35,
+   "event_type": "Mass File Encryption",
+   "source": "edr",
+   "hostname": "FS-01",
+   "user": "admin.ops",
+   "severity": "critical",
+   "description": "EDR alert: high-volume file modification with extension changes"
+  }
+ ],
+ "hours_ago": 0
+}

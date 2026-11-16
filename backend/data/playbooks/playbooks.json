@@ -1,0 +1,97 @@
+[
+  {
+    "id": "PB-MONITOR",
+    "name": "Enhanced Monitoring & Investigation",
+    "description": "Keep systems online, raise logging verbosity, open an investigation and hunt for related activity. Lowest disruption, highest residual risk.",
+    "categories": ["*"],
+    "aggressiveness": 0.1,
+    "twin": {"spread_multiplier": 0.9, "cross_zone_multiplier": 1.0, "isolate_compromised": false, "egress_block": false, "action_delay": 0, "disruption_scope": "none", "disruption_hours": 0, "fixed_cost": 500},
+    "actions": [
+      {"type": "open_investigation", "scope": "incident", "description": "Open an investigation case and assign an analyst", "risk_level": "low"},
+      {"type": "increase_logging", "scope": "incident_hosts", "description": "Enable verbose process, PowerShell and network logging", "risk_level": "low"},
+      {"type": "threat_hunt", "scope": "incident", "description": "Hunt for the incident's indicators across the estate", "risk_level": "low"}
+    ]
+  },
+  {
+    "id": "PB-CRED",
+    "name": "Credential Containment",
+    "description": "Reset passwords, revoke sessions and tokens and temporarily disable compromised accounts. Stops credential-based spread with limited host downtime.",
+    "categories": ["Credential Theft", "Authentication", "Account Compromise", "Account Manipulation", "Phishing", "Lateral Movement"],
+    "aggressiveness": 0.45,
+    "twin": {"spread_multiplier": 0.35, "cross_zone_multiplier": 0.8, "isolate_compromised": false, "egress_block": false, "action_delay": 1, "disruption_scope": "users", "disruption_hours": 2, "fixed_cost": 2500},
+    "actions": [
+      {"type": "reset_credentials", "scope": "incident_users", "description": "Force password reset for affected accounts", "risk_level": "medium"},
+      {"type": "revoke_sessions", "scope": "incident_users", "description": "Revoke active sessions, Kerberos tickets and refresh tokens", "risk_level": "medium"},
+      {"type": "disable_account", "scope": "incident_users", "description": "Temporarily disable affected accounts pending investigation", "risk_level": "high"},
+      {"type": "enforce_mfa", "scope": "incident_users", "description": "Require MFA re-registration for affected accounts", "risk_level": "low"}
+    ]
+  },
+  {
+    "id": "PB-ISOLATE",
+    "name": "Endpoint Isolation",
+    "description": "Network-isolate affected hosts through EDR while preserving forensic state. Strong containment of host-based threats at the cost of host downtime.",
+    "categories": ["Malicious Execution", "Malware", "Credential Theft", "Persistence", "Command and Control", "Defense Evasion", "Ransomware", "Lateral Movement"],
+    "aggressiveness": 0.65,
+    "twin": {"spread_multiplier": 0.6, "cross_zone_multiplier": 0.9, "isolate_compromised": true, "egress_block": false, "action_delay": 1, "disruption_scope": "compromised", "disruption_hours": 8, "fixed_cost": 4000},
+    "actions": [
+      {"type": "isolate_host", "scope": "incident_hosts", "description": "Network-isolate affected hosts via EDR (management channel retained)", "risk_level": "high"},
+      {"type": "collect_forensics", "scope": "incident_hosts", "description": "Capture memory and triage artefacts before remediation", "risk_level": "low"},
+      {"type": "block_hash", "scope": "incident", "description": "Block identified malicious binaries/hashes estate-wide", "risk_level": "medium"}
+    ]
+  },
+  {
+    "id": "PB-SEGMENT",
+    "name": "Network Segmentation & Egress Control",
+    "description": "Block malicious external infrastructure and restrict traffic between zones around the affected segment, limiting lateral movement and C2 without taking hosts offline.",
+    "categories": ["Command and Control", "Lateral Movement", "Reconnaissance", "Data Exfiltration", "Web Attack", "Availability"],
+    "aggressiveness": 0.55,
+    "twin": {"spread_multiplier": 0.7, "cross_zone_multiplier": 0.15, "isolate_compromised": false, "egress_block": true, "action_delay": 1, "disruption_scope": "segment", "disruption_hours": 1.5, "fixed_cost": 3000},
+    "actions": [
+      {"type": "block_ip", "scope": "external_ips", "description": "Block external IPs/domains linked to the incident at the perimeter", "risk_level": "medium"},
+      {"type": "restrict_zone_traffic", "scope": "incident_zones", "description": "Apply temporary deny rules between the affected zone and critical zones", "risk_level": "high"},
+      {"type": "increase_logging", "scope": "incident_hosts", "description": "Enable full network flow logging for the segment", "risk_level": "low"}
+    ]
+  },
+  {
+    "id": "PB-RANSOM",
+    "name": "Ransomware Emergency Containment",
+    "description": "Isolate affected hosts, segment the network, disable involved accounts and protect backup infrastructure. Maximum containment, maximum disruption.",
+    "categories": ["Ransomware", "Data Exfiltration", "Defense Evasion"],
+    "aggressiveness": 0.95,
+    "twin": {"spread_multiplier": 0.25, "cross_zone_multiplier": 0.1, "isolate_compromised": true, "egress_block": true, "action_delay": 1, "disruption_scope": "segment", "disruption_hours": 12, "fixed_cost": 9000},
+    "actions": [
+      {"type": "isolate_host", "scope": "incident_hosts", "description": "Network-isolate affected hosts immediately", "risk_level": "high"},
+      {"type": "restrict_zone_traffic", "scope": "incident_zones", "description": "Segment the affected zone from servers and backups", "risk_level": "high"},
+      {"type": "disable_account", "scope": "incident_users", "description": "Disable accounts involved in the incident", "risk_level": "high"},
+      {"type": "protect_backups", "scope": "critical_assets", "description": "Take backup repositories read-only/offline and verify integrity", "risk_level": "medium"},
+      {"type": "notify_stakeholders", "scope": "incident", "description": "Notify incident commander, legal and executive stakeholders", "risk_level": "low"}
+    ]
+  },
+  {
+    "id": "PB-WEB",
+    "name": "Web Application Containment",
+    "description": "Block attacking sources at the WAF, apply virtual patching and, if needed, take the vulnerable application offline for patching.",
+    "categories": ["Web Attack", "Availability"],
+    "aggressiveness": 0.5,
+    "twin": {"spread_multiplier": 0.5, "cross_zone_multiplier": 0.5, "isolate_compromised": false, "egress_block": true, "action_delay": 1, "disruption_scope": "compromised", "disruption_hours": 3, "fixed_cost": 3000},
+    "actions": [
+      {"type": "block_ip", "scope": "external_ips", "description": "Block attacking source IPs at the WAF/perimeter", "risk_level": "medium"},
+      {"type": "virtual_patch", "scope": "incident_hosts", "description": "Deploy WAF rule to block the exploited request pattern", "risk_level": "medium"},
+      {"type": "patch_application", "scope": "incident_hosts", "description": "Schedule emergency patching of the vulnerable application", "risk_level": "high"}
+    ]
+  },
+  {
+    "id": "PB-EXFIL",
+    "name": "Data Exfiltration Response",
+    "description": "Stop data leaving the organisation: block destinations, revoke cloud tokens, preserve evidence and start breach assessment.",
+    "categories": ["Data Exfiltration", "Command and Control"],
+    "aggressiveness": 0.6,
+    "twin": {"spread_multiplier": 0.6, "cross_zone_multiplier": 0.6, "isolate_compromised": false, "egress_block": true, "action_delay": 1, "disruption_scope": "users", "disruption_hours": 2, "fixed_cost": 5000},
+    "actions": [
+      {"type": "block_ip", "scope": "external_ips", "description": "Block exfiltration destinations at proxy and firewall", "risk_level": "medium"},
+      {"type": "revoke_sessions", "scope": "incident_users", "description": "Revoke cloud/API tokens for involved accounts", "risk_level": "medium"},
+      {"type": "preserve_evidence", "scope": "incident_hosts", "description": "Preserve logs and transfer records for breach assessment", "risk_level": "low"},
+      {"type": "notify_stakeholders", "scope": "incident", "description": "Engage privacy/legal for breach notification assessment", "risk_level": "low"}
+    ]
+  }
+]

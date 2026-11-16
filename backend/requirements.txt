@@ -1,0 +1,12 @@
+# SENTRIX AI backend runtime dependencies (Python 3.11+)
+fastapi>=0.110
+uvicorn[standard]>=0.29
+SQLAlchemy>=2.0.30
+pydantic>=2.7
+pydantic-settings>=2.2
+email-validator>=2.1
+python-multipart>=0.0.9
+httpx>=0.27
+numpy>=1.26
+scikit-learn>=1.4
+networkx>=3.2

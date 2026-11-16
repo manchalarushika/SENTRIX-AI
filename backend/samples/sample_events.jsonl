@@ -1,0 +1,4 @@
+{"event_type": "Failed Logon", "source": "sample", "hostname": "VPN-GW-01", "user": "j.miller", "src_ip": "198.51.100.90"}
+{"event_type": "Failed Logon", "source": "sample", "hostname": "VPN-GW-01", "user": "a.khan", "src_ip": "198.51.100.90"}
+{"event_type": "Process Creation", "source": "sample", "hostname": "WS-HR-007", "user": "a.khan", "process": "C:\\Windows\\System32\\whoami.exe", "command_line": "whoami /all"}
+{"format": "windows", "source": "sample", "raw": {"EventID": 1102, "Computer": "WS-HR-007", "EventData": {"SubjectUserName": "a.khan"}}}
