@@ -191,6 +191,31 @@ cd ../frontend && npm run build   # typecheck + production build
 
 ---
 
+## Screenshots
+
+These selected screenshots show the main SENTRIX AI ransomware investigation workflow and its key AI-assisted capabilities. Only representative views are included to avoid duplicate or unnecessary images.
+
+### Incident analysis
+![Incident overview and event timeline](screenshots/04-incident-overview-and-event-timeline.png)
+
+### Multi-agent analysis and AI Council
+![AI agents overview](screenshots/05-ai-agents-overview.png)
+![AI Council decision](screenshots/06-ai-council-decision.png)
+
+### Attack graph and attack paths
+![Attack graph network](screenshots/07-attack-graph-network.png)
+![Attack paths table](screenshots/08-attack-paths-table.png)
+
+### Digital Twin simulation
+![Digital Twin simulation results](screenshots/09-digital-twin-simulation-results.png)
+![Digital Twin cost comparison](screenshots/10-digital-twin-cost-comparison.png)
+
+### Human-reviewed response actions
+![Response approvals](screenshots/11-response-approvals.png)
+
+> The environment uses synthetic demo data. Digital Twin figures are simulation-based estimates, not actual losses or guaranteed predictions. Response actions remain subject to human review and approval.
+
+
 *Built as an AI Solutions Architect assessment deliverable. Threat-intel seed
 content is a curated summary of public MITRE ATT&CK and CISA KEV data — verify
 against the authoritative sources and refresh with `scripts/import_intel.py`.*
